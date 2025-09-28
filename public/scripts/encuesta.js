@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     user = await res.json();
   } catch {
     alert("No ha iniciado sesión correctamente.");
-    window.location.href = `index.html`;
+    window.location.href = `../index.html`;
     return;
   }
 
@@ -44,7 +44,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     alert("Error al cargar lista de personal que atiende.");
   }
 
-  // 3. Enviar encuesta
+  // 3. Cargar motivos de calificación
+  const motivoSelect = document.getElementById('motivo');
+
+  // Cargar motivos desde BD
+  try {
+    const res = await fetch('/api/encuestas/motivos');
+    const motivos = await res.json();
+
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.text = 'Seleccione un motivo';
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    motivoSelect.appendChild(defaultOption);
+
+    motivos.forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m.id_motivo;
+      opt.text = m.nombre_motivo;
+      motivoSelect.appendChild(opt);
+    });
+  } catch (err) {
+    console.error("Error cargando motivos:", err);
+    alert("Error al cargar motivos de la base de datos.");
+  }
+
+
+  // 4. Enviar encuesta
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -54,11 +81,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       puntualidad: parseInt(document.querySelector('input[name="puntualidad"]:checked')?.value),
       trato: parseInt(document.querySelector('input[name="trato"]:checked')?.value),
       resolucion: parseInt(document.querySelector('input[name="resolucion"]:checked')?.value),
-      motivo: document.getElementById('motivo').value,
+      // motivo: document.getElementById('motivo').value,
+      id_motivo: parseInt(motivoSelect.value), 
       comentario: document.getElementById('comentario').value.trim() || "Sin comentarios"
     };
 
-    if (!data.atendido_por || !data.puntualidad || !data.trato || !data.resolucion || !data.motivo) {
+    if (!data.atendido_por || !data.puntualidad || !data.trato || !data.resolucion || !data.id_motivo) {
       alert("Por favor, complete todas las preguntas.");
       return;
     }
@@ -67,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const res = await fetch('/api/encuestas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // 👈 aquí también
+        credentials: 'include',
         body: JSON.stringify(data)
       });
 
@@ -77,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         Swal.fire({
           title: "Encuesta enviada correctamente!",
           icon: "success",
-          timer: 1500,                // duración 2 segundos
+          timer: 1500,               
           timerProgressBar: true,
         });
         form.reset();

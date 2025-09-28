@@ -35,7 +35,6 @@ document.getElementById("btn-filtrar").addEventListener("click", async () => {
 });
 
 
-
 function renderRadarCalendar(data, inicio, fin) {
   const container = document.getElementById("radar-calendar");
   container.innerHTML = ""; // limpiar antes de renderizar
@@ -58,7 +57,7 @@ function renderRadarCalendar(data, inicio, fin) {
     // Crear un div para este mes
     const monthDiv = document.createElement("div");
     monthDiv.style.width = "100%";
-    monthDiv.style.height = "400px"; // altura razonable por mes
+    monthDiv.style.height = "900px";
     monthDiv.style.marginBottom = "10px";
     container.appendChild(monthDiv);
 
@@ -75,8 +74,8 @@ function renderSingleMonth(dom, data, inicio, fin) {
   myChart.clear();
 
   const scatterData = data.map(d => [d.dia.split("T")[0], 1]);
-  const cellSize = 50;
-  const pieRadius = 20;
+  const cellSize = 140;
+  const pieRadius = 50;
 
   const pieSeries = data.map((d, idx) => ({
     type: "pie",
@@ -102,8 +101,8 @@ function renderSingleMonth(dom, data, inicio, fin) {
       left: "center",
       orient: "vertical",
       cellSize: [cellSize, cellSize],
-      yearLabel: { show: false },
-      monthLabel: { show: true, nameMap: "en" },
+      yearLabel: { show: true, fontSize: 14, color: "#000", margin: 25 },
+      monthLabel: {show: true, nameMap: "en", margin: 10, top: "middle", left: "center", fontSize: 14, color: "#000"},
       range: [inicio, fin]
     },
     series: [
@@ -114,9 +113,11 @@ function renderSingleMonth(dom, data, inicio, fin) {
         symbolSize: 0,
         label: {
           show: true,
+          align: 'left',
+          verticalAlign: 'top',
           formatter: params => params.value[0].split("-")[2],
           offset: [-cellSize / 2, -cellSize / 2],
-          fontSize: 10
+          fontSize: 15
         },
         data: scatterData
       },
@@ -127,34 +128,3 @@ function renderSingleMonth(dom, data, inicio, fin) {
   window.addEventListener("resize", () => myChart.resize());
 }
 
-
-function renderRadarCalendar(data, inicio, fin) {
-  const container = document.getElementById("radar-calendar");
-  container.innerHTML = ""; // limpiar antes de renderizar
-
-  // Obtener lista de meses en el rango
-  const startDate = new Date(inicio);
-  const endDate = new Date(fin);
-
-  let current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-
-  while (current <= endDate) {
-    const monthStart = new Date(current.getFullYear(), current.getMonth(), 1);
-    const monthEnd = new Date(current.getFullYear(), current.getMonth() + 1, 0);
-    const monthData = data.filter(d => {
-      const day = new Date(d.dia);
-      return day >= monthStart && day <= monthEnd;
-    });
-    // Crear un div para este mes
-    const monthDiv = document.createElement("div");
-    monthDiv.style.width = "100%";
-    monthDiv.style.height = "400px"; // altura razonable por mes
-    monthDiv.style.marginBottom = "10px";
-    container.appendChild(monthDiv);
-
-    renderSingleMonth(monthDiv, monthData, monthStart, monthEnd);
-
-    // Avanzar al siguiente mes
-    current.setMonth(current.getMonth() + 1);
-  }
-}

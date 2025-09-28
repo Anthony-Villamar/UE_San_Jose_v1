@@ -19,13 +19,13 @@ encuestasRouter.post('/', async (req, res) => {
     trato,
     resolucion,
     comentario,
-    motivo
+    id_motivo
   } = req.body;
 
   try {
     const sql = `
       INSERT INTO calificaciones 
-      (cedula_usuario, atendido_por, fecha, puntualidad, trato, resolucion, comentario, motivo) 
+      (cedula_usuario, atendido_por, fecha, puntualidad, trato, resolucion, comentario, id_motivo) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
     await db.query(sql, [
@@ -36,7 +36,7 @@ encuestasRouter.post('/', async (req, res) => {
       trato,
       resolucion,
       comentario,
-      motivo
+      id_motivo
     ]);
 
     res.json({ success: true, message: "Encuesta registrada con éxito." });
@@ -45,5 +45,17 @@ encuestasRouter.post('/', async (req, res) => {
     res.status(500).json({ success: false, message: "Error al registrar la encuesta." });
   }
 });
+
+
+encuestasRouter.get('/motivos', async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT id_motivo, nombre_motivo FROM motivos_calificacion ORDER BY id_motivo ASC");
+    res.json(rows);
+  } catch (err) {
+    console.error("Error cargando motivos:", err);
+    res.status(500).json({ error: "Error al obtener motivos" });
+  }
+});
+
 
 export default encuestasRouter;

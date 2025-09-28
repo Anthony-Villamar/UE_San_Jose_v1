@@ -27,18 +27,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       filtroRango.style.display = 'block';
     }
   });
+  
 
   // 🔽 Mostrar TOP 3 de atención
   try {
     const res = await fetch('/api/estadisticas/top3', { credentials: 'include' });
     const top = await res.json();
-    // const contenedor = document.getElementById('topAtenciones1');
-    // contenedor.innerHTML = '';
-    // top.forEach((entry, index) => {
-    //   const p = document.createElement('p');
-    //   p.innerHTML = `<strong>${index + 1}. ${entry.nombre} ${entry.apellido}</strong> - Promedio: ${entry.promedio}`;
-    //   contenedor.appendChild(p);
-    // });
 
     const radarContainer = document.getElementById('topAtenciones');
     radarContainer.innerHTML = ''; // limpiar contenedor padre
@@ -51,16 +45,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       div.innerHTML = `
     <div class="card-inner">
       <div class="card-front">
+        <img class="imagen1" src="../images/foto_personal" alt="Foto" />
+        <div class="info-usuario">
         <h5>#${index + 1} ${entry.nombre}</h5>
         <p>Promedio: ${entry.promedio}</p>
+        </div>
       </div>
       <div class="card-back">
         <canvas id="graficoTopRadar${index + 1}"></canvas>
       </div>
     </div>
   `;
-  
-
       radarContainer.appendChild(div);
       
 
@@ -102,66 +97,15 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         }
       });
+      // Activar rotación al hacer click
+const cards = document.querySelectorAll('.card');
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    const inner = card.querySelector('.card-inner');
+    inner.classList.toggle('rotated'); // <-- clase CSS que rotará
+  });
+});
     });
-
-    // const radarContainer = document.getElementById('topAtenciones');
-    // radarContainer.innerHTML = ''; // Limpiar contenedor padre
-
-    // top.forEach((entry, index) => {
-    //   // Crear un contenedor individual para cada TOP
-    //   const div = document.createElement('div');
-    //   div.id = `topRadar${index + 1}`;
-    //   div.classList.add('top-radar-item'); // opcional para estilos
-    //   div.innerHTML = `
-    //     <!--<canvas id="graficoTopRadar${index + 1}"></canvas>-->
-    //     <div class="card">
-    //       <h5 class="title">#${index + 1} ${entry.nombre}</h5>
-    //       <canvas id="graficoTopRadar${index + 1}" style="max-height:280px;"></canvas>
-    //     </div>
-    //   `;
-
-    //   radarContainer.appendChild(div);
-
-    //   // Crear gráfico radar dentro de este div
-    //   const ctx = document.getElementById(`graficoTopRadar${index + 1}`).getContext('2d');
-
-    //   const color = [
-    //     { fondo: 'rgba(255, 99, 132, 0.2)', borde: 'rgb(255, 99, 132)' },
-    //     { fondo: 'rgba(54, 162, 235, 0.2)', borde: 'rgb(54, 162, 235)' },
-    //     { fondo: 'rgba(255, 206, 86, 0.2)', borde: 'rgb(255, 206, 86)' }
-    //   ][index];
-
-    //   new Chart(ctx, {
-    //     type: 'radar',
-    //     data: {
-    //       labels: ['Puntualidad', 'Trato', 'Resolución'],
-    //       datasets: [{
-    //         label: `${entry.nombre} ${entry.apellido}`,
-    //         data: [entry.promedio_puntualidad || 0, entry.promedio_trato || 0, entry.promedio_resolucion || 0],
-    //         fill: true,
-    //         backgroundColor: color.fondo,
-    //         borderColor: color.borde,
-    //         pointBackgroundColor: color.borde,
-    //         pointBorderColor: '#fff',
-    //         pointHoverBackgroundColor: '#fff',
-    //         pointHoverBorderColor: color.borde
-    //       }]
-    //     },
-    //     options: {
-    //       elements: { line: { borderWidth: 1 } },
-    //       plugins: { title: { display: true, text: `Calificación de ${entry.nombre}` }, legend: { display: false } },
-    //       scales: {
-    //         r: {
-    //           min: 0, max: 5, stepSize: 1,
-    //           angleLines: { color: 'rgba(0,0,0,0.6)', lineWidth: 1.5 },
-    //           grid: { color: 'rgba(0,0,0,0.3)', lineWidth: 1.2 },
-    //           pointLabels: { color: '#000', font: { size: 14, weight: 'bold' } },
-    //           ticks: { color: '#000', backdropColor: 'transparent', font: { size: 12 } }
-    //         }
-    //       }
-    //     }
-    //   });
-  // });
   } catch (err) {
   console.error(err);
   alert("Error al obtener estadísticas TOP.");
@@ -320,3 +264,13 @@ if (logoutBtn) {
     }
   });
 }
+
+// const cardImg = document.querySelector('.card-front img');
+
+// cardImg.addEventListener('mouseenter', () => {
+//   cardImg.src = '../images/logo2.png'; // Imagen que aparece al hacer hover
+// });
+
+// cardImg.addEventListener('mouseleave', () => {
+//   cardImg.src = '../images/1.jpg'; // Volver a la imagen original al salir
+// });
