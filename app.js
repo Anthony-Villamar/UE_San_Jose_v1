@@ -37,10 +37,10 @@ app.use(session({
 }));
 
 // Evitar cache
-app.use((req, res, next) => {
-  res.set("Cache-Control", "no-store");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.set("Cache-Control", "no-store");
+//   next();
+// });
 
 // Servir frontend (tu carpeta public con index.html y demás)
 app.use(express.static(path.join(__dirname, "public")));
