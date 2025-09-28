@@ -1,0 +1,523 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Serif, sans-serif;
+    font-size: 14px;
+}
+
+
+#contenedor_padre{
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*Estilos header y navbar*/
+#headerContent{
+    width: 100%;
+    background-color: #FFD700;
+    height: 8dvh;
+    
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    font-size: 2rem;
+}
+
+#open {
+    font-size: 3.5rem;
+}
+
+.navbar>a{
+    color: black;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: bold;
+    animation: entrada_header 0.4s linear;
+    position: relative;
+}
+
+.navbar>a::after{
+    position: absolute;
+    left: 50%;
+    content: "";
+    height: 5px;
+    width: 0%;
+    transition: width 0.4s ease, left 0.3s ease;
+    bottom: -5px;
+}
+
+.navbar>a:hover{
+    color: #010574;
+    &::after{
+        display: block;
+        left: 0%;
+        width: 100%;
+        background: linear-gradient(90deg, #4b51c3b9, #040434);
+    }
+}
+
+
+#logoutBtn {
+    background-color: #353574;
+    border-radius: 10px;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 0.6em;
+    transition: background-color 0.5s ease;
+    animation: entrada_header 0.7s linear;
+}
+
+#logoutBtn:hover {
+    background-color: #181c8a;
+    
+}
+
+@keyframes entrada_header {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos del contenido principal */
+#mainContent {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: 
+        slider 45s infinite linear,
+        entrada_main 0.9s ease-in-out;
+}
+
+@keyframes entrada_main {
+    from {
+        opacity: 0;
+        transform: translateX(-1000px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes slider {
+  0%, 30% { background-image: url('../images/1.jpg'); }
+  34%, 63% { background-image: url('../images/2.jpg'); }
+  67%, 96% { background-image: url('../images/3.jpg'); }
+  100% { background-image: url('../images/1.jpg'); }
+}
+
+/* Contenedor principal de la encuesta */
+.encuesta-container {
+    width: 60%;
+     background: rgba(255, 255, 255, 0.1); 
+    border:1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    padding: 20px;
+    font-size: 2rem;
+    backdrop-filter: blur(5px);
+    margin: 20px 0 30px 0;
+}
+
+option{
+    display: block;
+}
+/* Título */
+.encuesta-container > h2 {
+    margin: 20px;
+    font-weight: bold;
+    text-align: center;
+    font-size: clamp(20px, 2vw, 32px);
+    color: #1c1c5c;
+}
+
+/* Tipografía general */
+.encuesta-container,
+#encuestaForm label,
+#encuestaForm input,
+#encuestaForm select,
+#encuestaForm textarea {
+    font-size: clamp(14px, 1vw, 18px);
+}
+
+/* Formulario */
+#encuestaForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+
+/* Selects */
+#atendido_por1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    width: 80%;
+}
+
+#atendido_por1 select {
+    flex: 1;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Preguntas */
+.preguntas-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+.preguntas-container > label {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.preguntas-container-motivo
+ {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    gap: 5px;
+}
+
+
+
+.preguntas-container-motivo > select {
+    width: 80%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Comentario */
+.comentario-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 80%;
+}
+
+.comentario-container > textarea {
+    width: 100%;
+    height: 100px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+    padding: 10px;
+}
+
+
+/* Estilos para los radios como botones */
+.preguntas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+    width: 80%;
+}
+
+.preguntas input[type="radio"] {
+    display: none; /* Ocultamos el círculo clásico */
+}
+
+.preguntas label {
+    flex: 1 1 0;
+    min-width: 120px;  /* ancho mínimo igual para todos */
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #353574;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    color: #353574;
+position: relative;
+    padding-top: 50px; /* espacio arriba para el icono */
+}
+
+/* Neutral por defecto */
+.preguntas label::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  background-image: url("../assets/Emoji Smile Slight/SVG/ic_fluent_emoji_smile_slight_20_filled.svg");
+   /* cara neutral */
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: background-image 0.8s linear, transform 0.7s ease;
+  
+}
+
+.preguntas label {
+  position: relative;
+  padding-top: 50px;
+}
+
+/* Cambiar icono al seleccionar solo para la pregunta 1*/
+#p1:checked ~ label[for="p1"]::before, #t1:checked ~ label[for="t1"]::before, #r1:checked ~ label[for="r1"]::before {
+  background-image: url("../assets/Emoji Sad/SVG/ic_fluent_emoji_sad_20_filled.svg"); /* cara triste */
+  
+  transform: translateX(-50%) scale(1.2);
+}
+
+#p2:checked ~ label[for="p2"]::before, #t2:checked ~ label[for="t2"]::before, #r2:checked ~ label[for="r2"]::before {
+  background-image: url("../assets/Emoji Sad Slight/SVG/ic_fluent_emoji_sad_slight_20_filled.svg"); 
+  
+ /* triste */
+  transform: translateX(-50%) scale(1.2);
+}
+
+#p3:checked ~ label[for="p3"]::before, #t3:checked ~ label[for="t3"]::before, #r3:checked ~ label[for="r3"]::before {
+  background-image: url("../assets/Emoji/SVG/ic_fluent_emoji_20_filled.svg"); /* neutral */
+  transform: translateX(-50%) scale(1.2);
+}
+
+#p4:checked ~ label[for="p4"]::before, #t4:checked ~ label[for="t4"]::before, #r4:checked ~ label[for="r4"]::before {
+
+  background-image: url("../assets/Emoji Sparkle/SVG/ic_fluent_emoji_sparkle_20_filled.svg"); /* feliz */
+  transform: translateX(-50%) scale(1.2);
+}
+
+#p5:checked ~ label[for="p5"]::before, #t5:checked ~ label[for="t5"]::before, #r5:checked ~ label[for="r5"]::before {
+  background-image: url("../assets/Emoji Laugh/SVG/ic_fluent_emoji_laugh_20_filled.svg"); /* excelente */
+  transform: translateX(-50%) scale(1.2);
+}
+
+
+
+/* Hover */
+.preguntas label:hover {
+    background: #f0f0ff;
+}
+
+/* Cuando está seleccionado */
+.preguntas input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #353574, #181c8a);
+    color: white;
+    border-color: #181c8a;
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+/* Botón */
+#mainContent button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #353574, #181c8a);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.8s ease;
+}
+
+#mainContent button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #181c8a, #353574);
+}
+
+
+/*Estilos del pie de pagina*/
+#footerContent{
+    width: 100%;
+     min-height: 100px;
+    background: #091e62dd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    animation: entrada_footer 1.5s ease;
+}
+
+#footerContent>div>p{
+    color: white;
+    font-size: clamp(1.1rem, 1vw, 18px);
+    padding: 20px;
+}
+
+@keyframes entrada_footer {
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ====== RESPONSIVIDAD ====== */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .navbar {
+    flex-direction: row;        /* links y botón en línea */
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+    padding: 0 15px;
+  }
+
+  .navbar > a {
+    display: inline-block;      /* aseguramos que los links siempre sean visibles */
+    font-size: 1.3rem;
+  }
+
+  #logoutBtn {
+    font-size: 0.9em;
+    padding: 8px 16px;
+  }
+
+  .encuesta-container {
+    width: 80%;
+    padding: 15px;
+  }
+}
+
+/* Móviles grandes */
+@media (max-width: 768px) {
+  /* Header */
+  .navbar {
+    flex-direction: column;  /* enlaces y botón se apilan */
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    padding: 10px;
+  }
+
+  .navbar > a {
+    display: block; /* se mantienen visibles */
+    font-size: 1.3rem;
+  }
+
+  #logoutBtn {
+    width: 100%; /* botón ancho completo en móvil */
+    text-align: center;
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  /* Encuesta */
+  .encuesta-container {
+    width: 90%;
+    font-size: 1.6rem;
+  }
+
+  #atendido_por1 {
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+  }
+
+  .preguntas {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .preguntas label {
+    min-width: unset;
+    width: 100%;
+    padding: 12px;
+  }
+
+  .comentario-container {
+    width: 100%;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  #headerContent {
+    height: auto;
+    padding: 10px;
+  }
+
+  .navbar {
+    flex-direction: column;      /* links y botón apilados */
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+  }
+
+  .navbar > a {
+    display: block;              /* siempre visibles */
+    font-size: 1.1rem;
+  }
+
+  #logoutBtn {
+    width: 100%;                 /* botón ancho completo */
+    text-align: center;
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .encuesta-container {
+    width: 95%;
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .encuesta-container > h2 {
+    font-size: 1.2rem;
+  }
+
+  #encuestaForm {
+    gap: 15px;
+  }
+
+  #mainContent button {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  #footerContent > div > p {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,219 @@
+body {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('../images/fondo.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Animación al aparecer */
+@keyframes fadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-container {
+  width: 370px;
+  padding: 40px 30px;
+  /* background: linear-gradient(90deg, #009ca0, #8c11fa); */
+   background: linear-gradient(91deg, #10abb0, #8724ddfa);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 100px rgba(140, 17, 250, 0.9), 0 0 100px rgba(0, 156, 160, 0.9);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  animation: fadeSlide 1s ease-out;
+}
+
+/* Título */
+
+#logo {  
+  width: 80%;
+}
+
+
+
+#logo:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+
+h2 {
+  color: white;
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Formulario */
+#loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Etiquetas */
+#loginForm label {
+  color: white;
+  font-size: 1em;
+}
+
+/* Contenedores de usuario y contraseña */
+#usuario-container,
+#contrasena-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0 10px;
+}
+
+/* Estilo general de inputs */
+#loginForm input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background-color: #ffffffcc;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  font-size: 1em;
+}
+
+/* Contenedor input + botón ojo */
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #ffffffcc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Input dentro de .input-group */
+.input-group input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1em;
+}
+
+/* Botón ojito */
+.button_eye {
+  width: 45px;
+  height: 45px;
+  border: none;
+  background-color: #8c11fa;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 0 8px 8px 0;
+  box-shadow: none;
+  font-size: 1.1em;
+}
+
+/* Botón ingresar */
+#login {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(90deg, #00d4d4, #8c11fa);
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#login:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(140, 17, 250, 0.7), 0 0 25px rgba(0, 156, 160, 0.7);
+}
+
+
+/* ====== RESPONSIVIDAD ====== */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 992px) {
+  .login-container {
+    width: 80%;
+    padding: 30px 25px;
+  }
+
+  h2 {
+    font-size: 1.6em;
+  }
+
+  #login {
+    font-size: 1.1em;
+    padding: 10px;
+  }
+}
+
+/* Móviles grandes */
+@media (max-width: 768px) {
+  .login-container {
+    width: 90%;
+    padding: 25px 20px;
+    gap: 20px;
+  }
+
+  #logo {
+    width: 70%;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  #loginForm input,
+  .input-group input {
+    font-size: 0.95em;
+    padding: 9px;
+  }
+
+  .button_eye {
+    width: 40px;
+    height: 40px;
+    font-size: 1em;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .login-container {
+    width: 95%;
+    padding: 20px 15px;
+    border-radius: 15px;
+  }
+
+  #logo {
+    width: 60%;
+  }
+
+  h2 {
+    font-size: 1.2em;
+  }
+
+  #login {
+    font-size: 1em;
+    padding: 10px;
+  }
+}

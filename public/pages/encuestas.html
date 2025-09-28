@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Encuesta de Atención</title>
+  <link rel="stylesheet" href="../styles/estilosencuestas.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6811935099126260"
+    crossorigin="anonymous"></script> -->
+  <!-- <meta name="google-adsense-account" content="ca-pub-6811935099126260"> -->
+</head>
+
+<body>
+  <div id="contenedor_padre">
+    <header id="headerContent">
+      <!-- NAVBAR -->
+      <nav class="navbar">
+          <a href="encuestas.html">Encuesta</a>
+          <button id="logoutBtn">Cerrar sesión</button>
+      </nav>
+    </header>
+
+    <main id="mainContent">
+      <!-- CONTENIDO -->
+      <div class="encuesta-container">
+        <h2>Encuesta de Atención</h2>
+        <form id="encuestaForm">
+          <!-- Select de atención -->
+          <div class="preguntas-container" id="atendido_por1">
+            <label>¿Quién lo atendió?</label>
+            <select id="atendido_por" required></select>
+          </div>
+
+          <!-- Tiempo -->
+          <div class="preguntas-container">
+            <label>¿Como califica el tiempo de espera?</label>
+            <div class="preguntas radio-group">
+              <input type="radio" name="puntualidad" id="p1" value="1" required>
+              <label for="p1">Muy largo</label>
+              <input type="radio"  name="puntualidad" id="p2" value="2">
+              <label for="p2">Largo</label>
+              <input type="radio"  name="puntualidad" id="p3" value="3">
+              <label for="p3">Adecuado</label>
+              <input type="radio"  name="puntualidad" id="p4" value="4">
+              <label for="p4">Rápido</label>
+              <input type="radio"  name="puntualidad" id="p5" value="5">
+              <label for="p5">Inmediato</label>
+            </div>
+          </div>
+
+          <!-- Pregunta 2 -->
+          <div class="preguntas-container">
+            <label>¿Cómo calificaría la atencion recibida?</label>
+            <div class="preguntas radio-group">
+              <input type="radio" class="btn-check" name="trato" id="t1" value="1" required>
+              <label for="t1">Muy malo</label>
+              <input type="radio" class="btn-check" name="trato" id="t2" value="2">
+              <label for="t2">Malo</label>
+              <input type="radio" class="btn-check" name="trato" id="t3" value="3">
+              <label for="t3">Aceptable</label>
+              <input type="radio" class="btn-check" name="trato" id="t4" value="4">
+              <label for="t4">Bueno</label>
+              <input type="radio" class="btn-check" name="trato" id="t5" value="5">
+              <label for="t5">Excelente</label>
+            </div>
+          </div>
+
+          <!-- Resolucion -->
+          <div class="preguntas-container">
+            <label>¿Se resolvió su inquietud?</label>
+            <div class="preguntas radio-group">
+              <input type="radio" class="btn-check" name="resolucion" id="r1" value="1" required>
+              <label for="r1">No</label>
+              <input type="radio" class="btn-check" name="resolucion" id="r2" value="2">
+              <label for="r2">Parcialmente</label>
+              <input type="radio" class="btn-check" name="resolucion" id="r3" value="3">
+              <label for="r3">Neutral</label>
+              <input type="radio" class="btn-check" name="resolucion" id="r4" value="4">
+              <label for="r4">Sí</label>
+              <input type="radio" class="btn-check" name="resolucion" id="r5" value="5">
+              <label for="r5">Totalmente</label>
+            </div>
+          </div>
+
+          <!-- Motivo -->
+          <div class="preguntas-container-motivo preguntas-container">
+            <label>Motivo de visita:</label><br>
+            <select id="motivo" required>
+              <option value="Cancelar pensiones">Cancelar pensiones</option>
+              <option value="Consulta sobre deuda pendiente">Consulta sobre deuda pendiente</option>
+              <option value="Ayuda para subir comprobante a la plataforma de pago">Ayuda para subir comprobante a la
+                plataforma de pago</option>
+              <option value="Soporte para plataformas bloqueadas">Soporte para plataformas bloqueadas</option>
+              <option value="Consulta sobre curso vacacional San José">Consulta sobre curso vacacional San José</option>
+              <option value="Consulta sobre valores ofrecidos por la unidad educativa">Consulta sobre valores ofrecidos
+                por
+                la unidad educativa</option>
+            </select>
+
+          </div>
+
+          <!-- Comentario -->
+          <div class="comentario-container preguntas-container">
+            <label>¿Qué sugerencias tiene para mejorar el servicio recibido?</label>
+            <textarea id="comentario" rows="3" placeholder="Escriba su comentario aquí..."></textarea>
+          </div>
+
+          <button type="submit">Enviar Encuesta</button>
+        </form>
+      </div>
+    </main>
+
+    <!-- FOOTER CON ANUNCIO -->
+    <footer id="footerContent">
+      <div>
+        <p>Gracias por completar la encuesta</p>
+
+        <!-- Anuncio AdSense
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6811935099126260"
+          data-ad-slot="3025194257" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script> -->
+
+        <p>&copy; 2025 Encuesta San José</p>
+      </div>
+    </footer>
+  </div>
+  <script src="../scripts/encuesta.js"></script>
+</body>
+
+</html>
