@@ -23,6 +23,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 // configuración de sesiones
 app.set("trust proxy", 1);
 app.use(session({
