@@ -11,9 +11,9 @@ const updateThemeIcon = () => {
 
   const headerLogo= document.querySelector('.header-logo');
   if (isDark) {
-    headerLogo.src = "../public/images/logo2.svg"; // Logo for dark theme
+    headerLogo.src = "../images/logo2.svg"; // Logo for dark theme
   } else {
-    headerLogo.src = "../public/images/logo2.png"; // Logo for light theme
+    headerLogo.src = "../images/logo2.png"; // Logo for light theme
   }
 };
 // Apply dark theme if saved or system prefers, then update icon
