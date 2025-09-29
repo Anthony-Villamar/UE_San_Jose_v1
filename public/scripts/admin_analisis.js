@@ -37,18 +37,22 @@ document.getElementById("btn-filtrar").addEventListener("click", async () => {
 
 function renderRadarCalendar(data, inicio, fin) {
   const container = document.getElementById("radar-calendar");
-  container.innerHTML = ""; // limpiar antes de renderizar
+  container.innerHTML = "";
 
   // Obtener lista de meses en el rango
   const startDate = new Date(inicio);
   const endDate = new Date(fin);
 
-  let current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+  // Asegurarse de que startDate sea el primer día del mes
+  startDate.setDate(1);
+  let current = new Date(startDate.getFullYear(), startDate.getMonth(), 1); // Primer día del mes de inicio
 
+  // Iterar por cada mes en el rango
   while (current <= endDate) {
     const monthStart = new Date(current.getFullYear(), current.getMonth(), 1);
     const monthEnd = new Date(current.getFullYear(), current.getMonth() + 1, 0);
 
+    // Filtrar datos para este mes
     const monthData = data.filter(d => {
       const day = new Date(d.dia);
       return day >= monthStart && day <= monthEnd;
@@ -57,10 +61,11 @@ function renderRadarCalendar(data, inicio, fin) {
     // Crear un div para este mes
     const monthDiv = document.createElement("div");
     monthDiv.style.width = "100%";
-    monthDiv.style.height = "900px";
-    monthDiv.style.marginBottom = "10px";
+    monthDiv.style.height = "1000px";
+    monthDiv.style.marginBottom = "20px";
     container.appendChild(monthDiv);
 
+    // Renderizar el calendario de este mes
     renderSingleMonth(monthDiv, monthData, monthStart, monthEnd);
 
     // Avanzar al siguiente mes
@@ -74,9 +79,12 @@ function renderSingleMonth(dom, data, inicio, fin) {
   myChart.clear();
 
   const scatterData = data.map(d => [d.dia.split("T")[0], 1]);
+  // Configuraciones
   const cellSize = 140;
   const pieRadius = 50;
 
+  // Datos de las series de pies
+  // Mapea los datos para crear una serie de pie por cada día con datos
   const pieSeries = data.map((d, idx) => ({
     type: "pie",
     id: "pie-" + idx,
@@ -91,17 +99,18 @@ function renderSingleMonth(dom, data, inicio, fin) {
     ]
   }));
 
+  // Configuración del gráfico
   myChart.setOption({
     tooltip: {
       formatter: params => params.seriesType === "pie" ? `${params.name}: ${params.value}` : params.value[0]
     },
-    legend: { data: ["Puntualidad", "Trato", "Resolución"], bottom: 10 },
+    legend: { data: ["Puntualidad", "Trato", "Resolución"], bottom: 5 },
     calendar: {
       top: "middle",
       left: "center",
       orient: "vertical",
       cellSize: [cellSize, cellSize],
-      yearLabel: { show: true, fontSize: 14, color: "#000", margin: 25 },
+      yearLabel: { show: true, fontSize: 14, color: "#000", margin: 10 },
       monthLabel: {show: true, nameMap: "en", margin: 10, top: "middle", left: "center", fontSize: 14, color: "#000"},
       range: [inicio, fin]
     },
@@ -127,4 +136,3 @@ function renderSingleMonth(dom, data, inicio, fin) {
 
   window.addEventListener("resize", () => myChart.resize());
 }
-
