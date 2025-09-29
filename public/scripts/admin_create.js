@@ -1,16 +1,16 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  // Obtener datos del usuario logueado
-  let usuario;
-  try {
-    const res = await fetch('/api/login/me', { credentials: 'include' });
-    if (!res.ok) throw new Error('No logueado');
-    usuario = await res.json();
-  } catch {
-    alert('No ha iniciado sesión correctamente.');
-    window.location.href = "/";
-    return;
-  }
-});
+// document.addEventListener('DOMContentLoaded', async () => {
+//   // Obtener datos del usuario logueado
+//   let usuario;
+//   try {
+//     const res = await fetch('/api/login/me', { credentials: 'include' });
+//     if (!res.ok) throw new Error('No logueado');
+//     usuario = await res.json();
+//   } catch {
+//     alert('No ha iniciado sesión correctamente.');
+//     window.location.href = "/";
+//     return;
+//   }
+// });
 
 // Función para cargar roles dinámicamente en un select
 async function cargarRoles(selectElement, selectedRol = '') {
