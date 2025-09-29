@@ -68,7 +68,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
       } else if (me.rol === 'colecturia') {
         window.location.href = "/area_colecturia";
       } else if (me.rol.startsWith('evaluador')) {
-        window.location.href = "pages/encuestas.html";
+        window.location.href = "/encuestas";
       } else {
         alert("Rol no reconocido.");
       }

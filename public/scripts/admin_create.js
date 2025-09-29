@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     usuario = await res.json();
   } catch {
     alert('No ha iniciado sesión correctamente.');
-    window.location.href = "../index.html";
+    window.location.href = "/";
     return;
   }
 });

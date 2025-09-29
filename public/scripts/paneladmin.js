@@ -69,7 +69,7 @@ if (logoutBtn) {
       const data = await res.json();
       if (data.ok) {
         alert("Sesión cerrada correctamente.");
-        window.location.href = "../index.html";;
+        window.location.href = "/";;
       } else {
         alert("No se pudo cerrar sesión: " + data.error);
       }

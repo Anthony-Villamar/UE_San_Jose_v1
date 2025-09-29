@@ -83,6 +83,23 @@ app.get('/administrador_deactivation', (req, res) => {
   if (!req.session.user) return res.redirect('/');
   res.sendFile(path.join(__dirname, "public","pages","administrador_deactivation.html"));
 });
+app.get('/encuestas', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","encuestas.html"));
+});
+app.get('/area_secretaria', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","area_secretaria.html"));
+});
+app.get('/area_colecturia', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","area_colecturia.html"));
+});
+app.get('/area_docente', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","area_docente.html"));
+});
+
 
 // Middleware para rutas no encontradas en API
 app.use((req, res, next) => {
