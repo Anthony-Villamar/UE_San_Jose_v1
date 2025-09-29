@@ -60,13 +60,13 @@ document.getElementById('loginForm').addEventListener('submit', async function (
        }).then(r => r.json());
 
       if (me.rol === 'administrador') {
-        window.location.href = "pages/administrador.html";
+        window.location.href = "/administrador";
       } else if (me.rol === 'secretaria') {
-        window.location.href = "pages/area_secretaria.html";
+        window.location.href = "/area_secretaria";
       } else if (me.rol === 'docente') {
-        window.location.href = "pages/area_docente.html";
+        window.location.href = "/area_docente";
       } else if (me.rol === 'colecturia') {
-        window.location.href = "pages/area_colecturia.html";
+        window.location.href = "/area_colecturia";
       } else if (me.rol.startsWith('evaluador')) {
         window.location.href = "pages/encuestas.html";
       } else {
