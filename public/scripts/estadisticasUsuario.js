@@ -134,6 +134,10 @@ try {
       }]
     }
   });
+
+  // 🔽 Mostrar mensajes motivacionales con OpenAI
+    // mostrarMensajesMotivacionales(detalle);
+
 } catch (err) {
   console.error(err);
   alert("Error al obtener estadísticas generales.");
@@ -265,12 +269,30 @@ if (logoutBtn) {
   });
 }
 
-// const cardImg = document.querySelector('.card-front img');
 
-// cardImg.addEventListener('mouseenter', () => {
-//   cardImg.src = '../images/logo2.png'; // Imagen que aparece al hacer hover
-// });
+// Función para obtener mensajes motivacionales de OpenAI
+//linea 138 y 139 son con esto de openai para las palabras motivacionales
+// async function mostrarMensajesMotivacionales(detalle) {
+//   const footer = document.getElementById('mensajeMotivacional');
 
-// cardImg.addEventListener('mouseleave', () => {
-//   cardImg.src = '../images/1.jpg'; // Volver a la imagen original al salir
-// });
+//   const categorias = [
+//     { nombre: "Puntualidad", puntaje: detalle.promedio_puntualidad },
+//     { nombre: "Trato", puntaje: detalle.promedio_trato },
+//     { nombre: "Resolución", puntaje: detalle.promedio_resolucion }
+//   ];
+
+//   const mensajes = await Promise.all(
+//     categorias.map(async c => {
+//       const res = await fetch('/api/generar-mensaje', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ categoria: c.nombre, puntaje: Number(c.puntaje) }) // ✅ aquí
+//       });
+
+//       const data = await res.json();
+//       return `${c.nombre}: ${data.mensaje}`;
+//     })
+//   );
+
+//   footer.innerHTML = mensajes.join('<br>');
+// }

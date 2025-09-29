@@ -10,6 +10,7 @@ import loginRoutes from './routes/login.js';
 import encuestasRouter from './routes/encuestas.js';
 import estadisticasRouter from './routes/estadisticas.js';
 import usuariosRouter from './routes/usuarios.js';
+import iaRouter from './routes/ia.js';
 
 // Config
 dotenv.config();
@@ -49,15 +50,38 @@ app.use(session({
 // Servir frontend (tu carpeta public con index.html y demás)
 app.use(express.static(path.join(__dirname, "public")));
 
+
 // Rutas API
 app.use('/api/login', loginRoutes);
 app.use('/api/encuestas', encuestasRouter);
 app.use('/api/estadisticas', estadisticasRouter);
 app.use('/api/usuarios', usuariosRouter);
+app.use('/api', iaRouter);
+
 
 // Redirigir al index.html para rutas del frontend
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+app.get('/administrador', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","administrador.html"));
+});
+app.get('/administrador_analisis', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","administrador_analisis.html"));
+});
+app.get('/administrador_create', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","administrador_create.html"));
+});
+app.get('/administrador_update', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","administrador_update.html"));
+});
+app.get('/administrador_deactivation', (req, res) => {
+  if (!req.session.user) return res.redirect('/');
+  res.sendFile(path.join(__dirname, "public","pages","administrador_deactivation.html"));
 });
 
 // Middleware para rutas no encontradas en API
