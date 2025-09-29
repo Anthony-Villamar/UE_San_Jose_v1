@@ -62,6 +62,8 @@ function renderRadarCalendar(data, inicio, fin) {
     const monthDiv = document.createElement("div");
     monthDiv.style.width = "100%";
     monthDiv.style.height = "1000px";
+    monthDiv.style.maxWidth = "1200px"; // opcional, límite para que no se estire demasiado
+    monthDiv.style.margin = "0 auto"; 
     monthDiv.style.marginBottom = "20px";
     container.appendChild(monthDiv);
 
