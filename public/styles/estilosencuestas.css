@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Serif, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 
@@ -20,7 +20,7 @@
 #headerContent{
     width: 100%;
     background-color: #FFD700;
-    height: 8dvh;
+    height: 13dvh;
     
 }
 
@@ -33,8 +33,11 @@
     font-size: 2rem;
 }
 
-#open {
-    font-size: 3.5rem;
+#menuBtn {
+    display: none;
+    font-size: 2.5rem;
+    background: none;
+    border: none;
 }
 
 .navbar>a{
@@ -139,7 +142,7 @@
     border-radius: 20px;
     padding: 20px;
     font-size: 2rem;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(50px);
     margin: 20px 0 30px 0;
 }
 
@@ -392,132 +395,53 @@ position: relative;
 
 
 /* ====== RESPONSIVIDAD ====== */
-
-/* Tablets */
-@media (max-width: 992px) {
-  .navbar {
-    flex-direction: row;        /* links y botón en línea */
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1.3rem;
-    padding: 0 15px;
-  }
-
-  .navbar > a {
-    display: inline-block;      /* aseguramos que los links siempre sean visibles */
-    font-size: 1.3rem;
-  }
-
-  #logoutBtn {
-    font-size: 0.9em;
-    padding: 8px 16px;
-  }
-
-  .encuesta-container {
-    width: 80%;
-    padding: 15px;
-  }
-}
-
-/* Móviles grandes */
 @media (max-width: 768px) {
-  /* Header */
-  .navbar {
-    flex-direction: column;  /* enlaces y botón se apilan */
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.3rem;
-    padding: 10px;
-  }
+    .encuesta-container {
+        width: 90%;
+        font-size: 1.5rem;
+    }
 
-  .navbar > a {
-    display: block; /* se mantienen visibles */
-    font-size: 1.3rem;
-  }
+    #atendido_por1, .preguntas-container-motivo {
+        flex-direction: column;
+        width: 100%;
+    }
 
-  #logoutBtn {
-    width: 100%; /* botón ancho completo en móvil */
-    text-align: center;
-    font-size: 1rem;
-    padding: 10px;
-  }
+    .preguntas {
+        width: 100%;
+    }
 
-  /* Encuesta */
-  .encuesta-container {
-    width: 90%;
-    font-size: 1.6rem;
-  }
+    .preguntas label {
+        min-width: 100px;
+        font-size: 0.9em;
+    }
 
-  #atendido_por1 {
-    flex-direction: column;
-    width: 100%;
-    gap: 15px;
-  }
+    #menuBtn {
+        display: block;
+    }
 
-  .preguntas {
-    flex-direction: column;
-    width: 100%;
-  }
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
 
-  .preguntas label {
-    min-width: unset;
-    width: 100%;
-    padding: 12px;
-  }
+    .navbar.active {
+        display: flex;
+    }
 
-  .comentario-container {
-    width: 100%;
-  }
+    .navbar>a {
+        font-size: 1.5rem;
+    }
 }
-
-/* Móviles pequeños */
 @media (max-width: 480px) {
-  #headerContent {
-    height: auto;
-    padding: 10px;
-  }
+    .preguntas label {
+        min-width: 150px;
+        font-size: 0.8em;
+        padding: 8px;
+    }
 
-  .navbar {
-    flex-direction: column;      /* links y botón apilados */
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.2rem;
-  }
-
-  .navbar > a {
-    display: block;              /* siempre visibles */
-    font-size: 1.1rem;
-  }
-
-  #logoutBtn {
-    width: 100%;                 /* botón ancho completo */
-    text-align: center;
-    font-size: 1rem;
-    padding: 10px;
-  }
-
-  .encuesta-container {
-    width: 95%;
-    padding: 10px;
-    border-radius: 12px;
-  }
-
-  .encuesta-container > h2 {
-    font-size: 1.2rem;
-  }
-
-  #encuestaForm {
-    gap: 15px;
-  }
-
-  #mainContent button {
-    font-size: 1rem;
-    padding: 10px;
-  }
-
-  #footerContent > div > p {
-    font-size: 0.9rem;
-  }
+    #logoutBtn {
+        font-size: 0.5em;
+        padding: 8px 16px;
+    }
 }

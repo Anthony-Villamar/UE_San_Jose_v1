@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
+
+   const menuBtn = document.getElementById("menuBtn");
+  const navbar = document.querySelector(".navbar");
+
+  menuBtn.addEventListener("click", () => {
+    navbar.classList.toggle("active");
+  });
+
   const form = document.getElementById('encuestaForm');
   const atendidoSelect = document.getElementById('atendido_por');
 

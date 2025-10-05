@@ -10,6 +10,7 @@ import loginRoutes from './routes/login.js';
 import encuestasRouter from './routes/encuestas.js';
 import estadisticasRouter from './routes/estadisticas.js';
 import usuariosRouter from './routes/usuarios.js';
+import { verificarSesion } from './middleware/sesions.js';
 // import iaRouter from './routes/ia.js';
 
 // Config
@@ -42,10 +43,10 @@ app.use(session({
 }));
 
 // Evitar cache
-// app.use((req, res, next) => {
-//   res.set("Cache-Control", "no-store");
-//   next();
-// });
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
 
 // Servir frontend (tu carpeta public con index.html y demás)
 app.use(express.static(path.join(__dirname, "public")));
@@ -63,40 +64,31 @@ app.use('/api/usuarios', usuariosRouter);
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
-app.get('/administrador', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/administrador',verificarSesion,verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","administrador.html"));
 });
-app.get('/administrador_analisis', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/administrador_analisis',verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","administrador_analisis.html"));
 });
-app.get('/administrador_create', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/administrador_create',verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","administrador_create.html"));
 });
-app.get('/administrador_update', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/administrador_update',verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","administrador_update.html"));
 });
-app.get('/administrador_deactivation', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/administrador_deactivation',verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","administrador_deactivation.html"));
 });
-app.get('/encuestas', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/encuestas',verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","encuestas.html"));
 });
-app.get('/area_secretaria', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/area_secretaria',verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","area_secretaria.html"));
 });
-app.get('/area_colecturia', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/area_colecturia',verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","area_colecturia.html"));
 });
-app.get('/area_docente', (req, res) => {
-  if (!req.session.user) return res.redirect('/');
+app.get('/area_docente',verificarSesion, (req, res) => {
   res.sendFile(path.join(__dirname, "public","pages","area_docente.html"));
 });
 
