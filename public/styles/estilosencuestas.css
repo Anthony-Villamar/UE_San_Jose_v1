@@ -446,29 +446,6 @@ option {
 }
 
 
-
-@media (max-width: 768px) {
-  .encuesta-container {
-    width: 90%;
-    padding: 15px;
-    font-size: 1.2rem;
-  }
-
-  .encuesta-container>h2 {
-    font-size: 1.8rem;
-  }
-
-  #mainContent button {
-    width: 80%;
-    font-size: 1.3rem;
-  }
-
-  #footerContent>div>p {
-    font-size: 1.2rem;
-  }
-}
-
-
 /* --- Ajuste general para tablets y móviles medianos --- */
 @media (max-width: 768px) {
   
@@ -592,5 +569,38 @@ option {
 
   #footerContent>div>p {
     font-size: 0.9rem;
+  }
+}
+
+/* --- Ajuste para modo horizontal (landscape) --- */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  #headerContent {
+    height: 14dvh; /* un poco más alto */
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  #headerContent h1,
+  #headerContent h2 {
+    font-size: 1rem;
+  }
+
+  #headerContent button {
+    padding: 6px 12px;
+    font-size: 1.5rem;
+    border-radius: 8px;
+  }
+
+  /* Evitar que el contenido quede pegado al header */
+  #mainContent {
+    padding-top: 16dvh;
+  }
+
+  .encuesta-container {
+    width: 85%;
+    padding: 10px;
+    font-size: 1rem;
   }
 }
