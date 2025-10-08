@@ -462,10 +462,6 @@ option {
     font-size: 1em;
   }
 
-  #mainContent {
-    padding-top: 12dvh;
-    /* evita que el header tape contenido */
-  }
 
   .encuesta-container {
     width: 90%;
