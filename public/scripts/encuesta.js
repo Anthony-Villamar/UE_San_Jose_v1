@@ -157,3 +157,62 @@ if (logoutBtn) {
     }
   });
 }
+
+
+// --- MODO "UNA PREGUNTA POR PANTALLA" EN MÓVILES ---
+function activarModoPreguntaPorPantalla() {
+  const preguntas = document.querySelectorAll('.preguntas-container, .preguntas-container-motivo, .comentario-container');
+  const esMovil = window.innerWidth <= 768;
+
+  // Evitar reejecución innecesaria
+  if (activarModoPreguntaPorPantalla.modoActual === esMovil) return;
+  activarModoPreguntaPorPantalla.modoActual = esMovil;
+
+  // Restablecer visibilidad
+  preguntas.forEach(p => {
+    p.style.display = "flex";
+    p.classList.remove("oculto");
+  });
+
+  if (esMovil) {
+    let actual = 0;
+
+    const mostrarPregunta = (i) => {
+      preguntas.forEach((p, idx) => {
+        if (idx === i) {
+          p.classList.remove("oculto");
+          p.style.display = "flex";
+        } else {
+          p.classList.add("oculto");
+          setTimeout(() => p.style.display = "none", 300);
+        }
+      });
+    };
+
+    // Ocultar todas menos la primera
+    mostrarPregunta(0);
+
+    // Escuchar cambios una sola vez
+    preguntas.forEach((pregunta, idx) => {
+      const inputs = pregunta.querySelectorAll("input, select, textarea");
+      inputs.forEach((input) => {
+        if (!input.dataset.listenerAdded) { // evita duplicar
+          input.dataset.listenerAdded = true;
+          input.addEventListener("change", () => {
+            if (idx < preguntas.length - 1) {
+              actual++;
+              mostrarPregunta(actual);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          });
+        }
+      });
+    });
+  }
+}
+
+// Ejecutar en carga y al cambiar tamaño
+window.addEventListener("DOMContentLoaded", activarModoPreguntaPorPantalla);
+window.addEventListener("load", activarModoPreguntaPorPantalla); // <-- nuevo
+window.addEventListener("resize", activarModoPreguntaPorPantalla);
+
