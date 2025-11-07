@@ -11,7 +11,7 @@ import encuestasRouter from './routes/encuestas.js';
 import estadisticasRouter from './routes/estadisticas.js';
 import usuariosRouter from './routes/usuarios.js';
 import { verificarSesion } from './middleware/sesions.js';
-// import iaRouter from './routes/ia.js';
+import iaRouter from './routes/ia.js';
 
 // Config
 dotenv.config();
@@ -57,7 +57,7 @@ app.use('/api/login', loginRoutes);
 app.use('/api/encuestas', encuestasRouter);
 app.use('/api/estadisticas', estadisticasRouter);
 app.use('/api/usuarios', usuariosRouter);
-// app.use('/api', iaRouter);
+app.use('/api', iaRouter);
 
 
 // Redirigir al index.html para rutas del frontend

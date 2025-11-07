@@ -258,6 +258,11 @@ select {
   margin: 0;
 }
 
+#anio{
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {

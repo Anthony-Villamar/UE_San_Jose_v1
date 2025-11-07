@@ -12,12 +12,14 @@ estadisticasRouter.get('/detalle', async (req, res) => {
   try {
     const sql = `
       SELECT 
-        ROUND(AVG(puntualidad), 2) AS promedio_puntualidad,
-        ROUND(AVG(trato), 2) AS promedio_trato,
-        ROUND(AVG(resolucion), 2) AS promedio_resolucion
-      FROM calificaciones
-      WHERE atendido_por = ?
-        AND TIME(fecha) BETWEEN '07:00:00' AND '14:30:00'
+        ROUND(AVG(c.puntualidad), 2) AS promedio_puntualidad,
+        ROUND(AVG(c.trato), 2) AS promedio_trato,
+        ROUND(AVG(c.resolucion), 2) AS promedio_resolucion
+      FROM calificaciones c
+      JOIN usuarios u ON u.cedula = c.atendido_por
+      WHERE c.atendido_por = ?
+      AND u.estado = 'activo'
+        AND TIME(c.fecha) BETWEEN '07:00:00' AND '14:30:00'
     `;
     const [rows] = await db.query(sql, [cedula]);
     res.json(rows[0]);
@@ -39,7 +41,9 @@ estadisticasRouter.get('/top3', async (req, res) => {
         ROUND(AVG((IFNULL(c.puntualidad, 0) + IFNULL(c.trato, 0) + IFNULL(c.resolucion, 0)) / 3), 2) AS promedio
       FROM calificaciones c
       JOIN personas p ON c.atendido_por = p.cedula
-      WHERE TIME(c.fecha) BETWEEN '07:00:00' AND '14:30:00'
+      JOIN usuarios  u ON u.cedula = p.cedula
+      WHERE u.estado = 'activo'
+      AND TIME(c.fecha) BETWEEN '07:00:00' AND '14:30:00'
       GROUP BY c.atendido_por
       ORDER BY promedio DESC
       LIMIT 3
@@ -60,14 +64,16 @@ estadisticasRouter.get('/detalle/diario', async (req, res) => {
   try {
     const sql = `
       SELECT 
-        DATE(fecha) AS fecha,
-        ROUND(AVG(puntualidad), 2) AS promedio_puntualidad,
-        ROUND(AVG(trato), 2) AS promedio_trato,
-        ROUND(AVG(resolucion), 2) AS promedio_resolucion
-      FROM calificaciones
-      WHERE atendido_por = ?
-        AND TIME(fecha) BETWEEN '07:00:00' AND '14:30:00'
-      GROUP BY DATE(fecha)
+        DATE(c.fecha) AS fecha,
+        ROUND(AVG(c.puntualidad), 2) AS promedio_puntualidad,
+        ROUND(AVG(c.trato), 2) AS promedio_trato,
+        ROUND(AVG(c.resolucion), 2) AS promedio_resolucion
+      FROM calificaciones c
+      JOIN usuarios u ON u.cedula = c.atendido_por
+      WHERE c.atendido_por = ?
+        AND u.estado = 'activo'
+        AND TIME(c.fecha) BETWEEN '07:00:00' AND '14:30:00'
+      GROUP BY DATE(c.fecha)
       ORDER BY fecha DESC
     `;
     const [rows] = await db.query(sql, [cedula]);
@@ -91,13 +97,15 @@ estadisticasRouter.get('/detalle/promedio', async (req, res) => {
   try {
     const sql = `
       SELECT 
-        ROUND(AVG(puntualidad), 2) AS promedio_puntualidad,
-        ROUND(AVG(trato), 2) AS promedio_trato,
-        ROUND(AVG(resolucion), 2) AS promedio_resolucion
-      FROM calificaciones
-      WHERE atendido_por = ?
-        AND fecha BETWEEN ? AND ?
-        AND TIME(fecha) BETWEEN '07:00:00' AND '14:30:00'
+        ROUND(AVG(c.puntualidad), 2) AS promedio_puntualidad,
+        ROUND(AVG(c.trato), 2) AS promedio_trato,
+        ROUND(AVG(c.resolucion), 2) AS promedio_resolucion
+      FROM calificaciones c
+      JOIN usuarios u ON u.cedula = c.atendido_por
+      WHERE c.atendido_por = ?
+        AND u.estado = 'activo'
+        AND c.fecha BETWEEN ? AND ?
+        AND TIME(c.fecha) BETWEEN '07:00:00' AND '14:30:00'
     `;
     const [rows] = await db.query(sql, [cedula, desde + " 00:00:00", hasta + " 23:59:59"]);
 
@@ -142,7 +150,8 @@ estadisticasRouter.get("/calendario", async (req, res) => {
       JOIN usuarios u ON p.cedula = u.cedula
       JOIN roles r ON u.id_rol = r.id_rol
       WHERE DATE(c.fecha) BETWEEN ? AND ?
-      AND TIME(fecha) BETWEEN '07:00:00' AND '14:30:00'
+      AND TIME(c.fecha) BETWEEN '07:00:00' AND '14:30:00'
+      AND u.estado = 'activo'
       ${filtroRol}
       GROUP BY dia, r.nombre_rol
       ORDER BY dia;

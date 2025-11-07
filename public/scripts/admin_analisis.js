@@ -57,12 +57,12 @@ function renderRadarCalendar(data, inicio, fin) {
       const day = new Date(d.dia);
       return day >= monthStart && day <= monthEnd;
     });
-
+    
     // Crear un div para este mes
     const monthDiv = document.createElement("div");
     monthDiv.style.width = "100%";
-    monthDiv.style.height = "1000px";
-    monthDiv.style.maxWidth = "1200px"; // opcional, límite para que no se estire demasiado
+    // monthDiv.style.height = "1000px";
+    // monthDiv.style.maxWidth = "1200px"; // opcional, límite para que no se estire demasiado
     monthDiv.style.margin = "0 auto"; 
     monthDiv.style.marginBottom = "20px";
     container.appendChild(monthDiv);
@@ -75,66 +75,235 @@ function renderRadarCalendar(data, inicio, fin) {
   }
 }
 
-// Función que renderiza un calendario vertical por mes
+
+
+// function renderSingleMonth(dom, data, inicio, fin) {
+//   // --- helpers responsivos ---
+//   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+//   // cuántas filas (semanas) ocupa ese mes (5 o 6 normalmente)
+//   function weeksInMonth(d1, d2) {
+//     const first = new Date(d1.getFullYear(), d1.getMonth(), 1);
+//     const last  = new Date(d1.getFullYear(), d1.getMonth() + 1, 0);
+//     const firstDow = (first.getDay() + 6) % 7; // L=0..D=6 (formato ISO)
+//     const days = last.getDate();
+//     return Math.ceil((firstDow + days) / 7);
+//   }
+
+//   function metrics() {
+//     const w = dom.clientWidth || window.innerWidth;
+//     // ancho útil para 7 días con márgenes internos
+//     const padX = 24; // padding/márgen visual
+//     let cellW = Math.floor((w - padX * 2) / 7);
+//     cellW = clamp(cellW, 40, 140);         // nunca más chico de 40px ni más grande de 140px
+//     const pieR = Math.floor(cellW * 0.36); // radio pie proporcional a celda
+//     const font  = Math.max(10, Math.floor(cellW * 0.18));
+//     const rows  = weeksInMonth(inicio, fin);
+//     const header = 64;                     // espacio para año/mes
+//     const h = header + rows * cellW + 24;  // alto total del chart
+//     return { cellW, pieR, font, h };
+//   }
+//    // ---- NUEVO: título "Mes Año" ----
+//   const monthTitle =
+//     inicio.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })
+//           .replace(/^\w/, c => c.toUpperCase());
+
+//   let M = metrics();
+//   dom.style.height = M.h + "px";
+
+//   const myChart = echarts.init(dom);
+//   myChart.clear();
+
+//   const scatterData = data.map(d => [d.dia.split("T")[0], 1]);
+
+//   // series pie por día, con radio proporcional
+//   const pieSeries = data.map((d, idx) => ({
+//     type: "pie",
+//     id: "pie-" + idx,
+//     center: [d.dia.split("T")[0], 1],
+//     radius: M.pieR,
+//     coordinateSystem: "calendar",
+//     label: { formatter: "{c}", position: "inside", fontSize: Math.max(9, M.font - 2) },
+//     data: [
+//       { name: "Puntualidad", value: +d.puntualidad },
+//       { name: "Trato",       value: +d.trato },
+//       { name: "Resolución",  value: +d.resolucion }
+//     ]
+//   }));
+
+//   myChart.setOption({
+//         title: { text: monthTitle, left: "center", top: 10, textStyle: { fontSize: Math.max(12, M.font + 2) } },
+
+//     tooltip: { confine: true, formatter: p => p.seriesType === "pie" ? `${p.name}: ${p.value}` : p.value[0] },
+//     legend: {
+//       data: ["Puntualidad", "Trato", "Resolución"],
+//       bottom: 6,
+//       textStyle: { fontSize: Math.max(9, M.font - 2) }
+//     },
+//     calendar: {
+//       top: 50,
+//       left: "center",
+//       orient: "vertical",
+//       cellSize: [M.cellW, M.cellW],      // ← tamaño real por día
+//       splitLine: { show: true, lineStyle: { color: "#e5ecf6" } },
+//       yearLabel:  { show: false, fontSize: Math.max(12, M.font), color: "#000", margin: 6 },
+//       monthLabel: { show: false, nameMap: "es", fontSize: Math.max(12, M.font), color: "#000", margin: 6 },
+//       dayLabel:   { show: false },
+//       range: [inicio, fin]
+//     },
+//     series: [
+//       {
+//         id: "label",
+//         type: "scatter",
+//         coordinateSystem: "calendar",
+//         symbolSize: 0,
+//         label: {
+//           show: true,
+//           align: "left",
+//           verticalAlign: "top",
+//           // número del día en esquina superior izquierda de la celda
+//           formatter: p => p.value[0].split("-")[2],
+//           offset: [-(M.cellW / 2) + 6, -(M.cellW / 2) + 6],
+//           fontSize: Math.max(11, M.font)
+//         },
+//         data: scatterData
+//       },
+//       ...pieSeries
+//     ]
+//   });
+
+//   // re-cálculo real al cambiar tamaño del contenedor
+//   const ro = new ResizeObserver(() => {
+//     M = metrics();
+//     dom.style.height = M.h + "px";
+//     // actualizar cellSize, fuentes y radios sin reconstruir todo
+//     myChart.setOption({
+//       legend: { textStyle: { fontSize: Math.max(9, M.font - 2) } },
+//       calendar: { cellSize: [M.cellW, M.cellW] },
+//       series: [
+//         {
+//           id: "label",
+//           label: {
+//             offset: [-(M.cellW / 2) + 6, -(M.cellW / 2) + 6],
+//             fontSize: Math.max(11, M.font)
+//           }
+//         },
+//         ...data.map((d, idx) => ({
+//           id: "pie-" + idx,
+//           radius: M.pieR,
+//           label: { fontSize: Math.max(9, M.font - 2) }
+//         }))
+//       ]
+//     });
+//     myChart.resize();
+//   });
+//   ro.observe(dom);
+
+//   window.addEventListener("resize", () => myChart.resize(), { passive: true });
+// }
+
 function renderSingleMonth(dom, data, inicio, fin) {
-  const myChart = echarts.init(dom);
-  myChart.clear();
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
 
-  const scatterData = data.map(d => [d.dia.split("T")[0], 1]);
-  // Configuraciones
-  const cellSize = 140;
-  const pieRadius = 50;
+  function weeksInMonth(d) {
+    const first = new Date(d.getFullYear(), d.getMonth(), 1);
+    const last  = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    const firstDow = (first.getDay() + 6) % 7;
+    return Math.ceil((firstDow + last.getDate()) / 7);
+  }
 
-  // Datos de las series de pies
-  // Mapea los datos para crear una serie de pie por cada día con datos
-  const pieSeries = data.map((d, idx) => ({
-    type: "pie",
-    id: "pie-" + idx,
-    center: [d.dia.split("T")[0], 1],
-    radius: pieRadius,
-    coordinateSystem: "calendar",
-    label: { formatter: "{c}", position: "inside", fontSize: 10 },
+  function metrics() {
+    const w = dom.clientWidth || window.innerWidth;
+    const padX = 24;
+    let cellW = Math.floor((w - padX * 2) / 7);
+    cellW = clamp(cellW, 40, 140);
+    const rows = weeksInMonth(inicio);
+    const font = Math.max(10, Math.floor(cellW * 0.18));
+    const header = 64;                         // espacio de título
+    const legendSpace = clamp(Math.round(font * 2), 20, 36); // debajo del calendario
+    const h = header + rows * cellW + legendSpace + 10;      // alto total contenedor
+    const pieR = Math.floor(cellW * 0.36);
+    return { cellW, rows, font, header, legendSpace, pieR, h };
+  }
+
+  const monthTitle = inicio.toLocaleDateString('es-ES', { month:'long', year:'numeric' })
+                           .replace(/^\w/, c => c.toUpperCase());
+
+  let M = metrics();
+  dom.style.height = M.h + 'px';
+
+  const chart = echarts.init(dom);
+  const scatterData = data.map(d => [d.dia.split('T')[0], 1]);
+
+  const pies = data.map((d, i) => ({
+    type: 'pie',
+    id: 'pie-'+i,
+    center: [d.dia.split('T')[0], 1],
+    radius: M.pieR,
+    coordinateSystem: 'calendar',
+    label: { formatter: '{c}', position: 'inside', fontSize: Math.max(9, M.font - 2) },
     data: [
-      { name: "Puntualidad", value: parseFloat(d.puntualidad) },
-      { name: "Trato", value: parseFloat(d.trato) },
-      { name: "Resolución", value: parseFloat(d.resolucion) }
+      { name: 'Puntualidad', value: +d.puntualidad },
+      { name: 'Trato',       value: +d.trato },
+      { name: 'Resolución',  value: +d.resolucion }
     ]
   }));
 
-  // Configuración del gráfico
-  myChart.setOption({
-    tooltip: {
-      formatter: params => params.seriesType === "pie" ? `${params.name}: ${params.value}` : params.value[0]
+  chart.setOption({
+    title: { text: monthTitle, left: 'center', top: 10, textStyle: { fontSize: Math.max(12, M.font + 2) } },
+    tooltip: { confine: true, formatter: p => p.seriesType === 'pie' ? `${p.name}: ${p.value}` : p.value[0] },
+    legend: {
+      data: ['Puntualidad','Trato','Resolución'],
+      bottom: 8,
+      itemGap: 14,
+      itemWidth: 16,
+      itemHeight: 10,
+      padding: 0,
+      textStyle: { fontSize: Math.max(9, M.font - 2) }
     },
-    legend: { data: ["Puntualidad", "Trato", "Resolución"], bottom: 5 },
     calendar: {
-      top: "middle",
-      left: "center",
-      orient: "vertical",
-      cellSize: [cellSize, cellSize],
-      yearLabel: { show: true, fontSize: 14, color: "#000", margin: 10 },
-      monthLabel: {show: true, nameMap: "en", margin: 10, top: "middle", left: "center", fontSize: 14, color: "#000"},
+      top: 50,
+      left: 'center',
+      orient: 'vertical',
+      cellSize: [M.cellW, M.cellW],
+      splitLine: { show: true, lineStyle: { color: '#e5ecf6' } },
+      yearLabel: { show: false }, monthLabel: { show: false, nameMap: 'es' }, dayLabel: { show: false },
+      bottom: M.legendSpace,      // <-- clave: acercar calendario a la leyenda
       range: [inicio, fin]
     },
     series: [
       {
-        id: "label",
-        type: "scatter",
-        coordinateSystem: "calendar",
+        id: 'label',
+        type: 'scatter',
+        coordinateSystem: 'calendar',
         symbolSize: 0,
         label: {
           show: true,
           align: 'left',
           verticalAlign: 'top',
-          formatter: params => params.value[0].split("-")[2],
-          offset: [-cellSize / 2, -cellSize / 2],
-          fontSize: 15
+          formatter: p => p.value[0].split('-')[2],
+          offset: [-(M.cellW/2)+6, -(M.cellW/2)+6],
+          fontSize: Math.max(11, M.font)
         },
         data: scatterData
       },
-      ...pieSeries
+      ...pies
     ]
   });
 
-  window.addEventListener("resize", () => myChart.resize());
+  const ro = new ResizeObserver(() => {
+    M = metrics();
+    dom.style.height = M.h + 'px';
+    chart.setOption({
+      legend: { textStyle: { fontSize: Math.max(9, M.font - 2) } },
+      calendar: { cellSize: [M.cellW, M.cellW], bottom: M.legendSpace },
+      series: [
+        { id: 'label', label: { offset: [-(M.cellW/2)+6, -(M.cellW/2)+6], fontSize: Math.max(11, M.font) } },
+        ...data.map((_, i) => ({ id: 'pie-'+i, radius: M.pieR, label: { fontSize: Math.max(9, M.font - 2) } }))
+      ]
+    });
+    chart.resize();
+  });
+  ro.observe(dom);
+  window.addEventListener('resize', () => chart.resize(), { passive: true });
 }

@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel Administrador</title>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" /> -->
 
   <link rel="stylesheet" href="../styles/estilosadministrador.css" />
   <!-- Linking Google fonts for icons -->
@@ -100,63 +99,113 @@
       </div>
     </aside>
     <!-- Site main content -->
-    <div class="main-content">
-      <h2 class="mb-4 text-center text-success">Actualizar Usuario</h2>
-      <form id="actualizarForm" class="p-4 border bg-white rounded shadow-sm">
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="cedulaActualizar" class="form-label">Cédula del usuario a actualizar</label>
-            <input type="text" id="cedulaActualizar" class="form-control" maxlength="10" required />
-          </div>
-          <div class="col-md-6">
-            <label for="nombreActualizar" class="form-label">Nuevo Nombre</label>
-            <input type="text" id="nombreActualizar" class="form-control" maxlength="25" />
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="apellidoActualizar" class="form-label">Nuevo Apellido</label>
-            <input type="text" id="apellidoActualizar" class="form-control" maxlength="25" />
-          </div>
-          <div class="col-md-6">
-            <label for="correoActualizar" class="form-label">Nuevo Correo</label>
-            <input type="email" id="correoActualizar" class="form-control" maxlength="50" />
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="telefonoActualizar" class="form-label">Nuevo Teléfono</label>
-            <input type="text" id="telefonoActualizar" class="form-control" maxlength="10" />
-          </div>
-          <div class="col-md-6">
-            <label for="rolActualizar" class="form-label">Nuevo Rol</label>
-            <select id="rolActualizar" class="form-select">
-              <option value="">-- Sin cambiar --</option>
-              <!-- Aquí las opciones de rol se cargan dinámicamente vía JS -->
-            </select>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="usuarioActualizar" class="form-label">Nuevo Usuario</label>
-            <input type="text" id="usuarioActualizar" class="form-control" maxlength="20" />
-          </div>
-          <div class="col-md-6">
-            <label for="contrasenaActualizar" class="form-label">Nueva Contraseña</label>
-            <input type="text" id="contrasenaActualizar" class="form-control" maxlength="20" />
-          </div>
-        </div>
-
-        <div class="d-grid">
-          <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
-        </div>
-      </form>
-
-      <div id="mensaje" class="mt-3"></div>
+<div class="main-content">
+  <!-- Hero -->
+  <header class="page-hero">
+    <div class="page-hero__icon">
+      <span class="material-symbols-rounded">autorenew</span>
     </div>
+    <div>
+      <h1 class="page-hero__title">Actualizar Usuario</h1>
+      <p class="page-hero__subtitle">Edita datos personales, credenciales o rol. Solo completa lo que desees cambiar.</p>
+    </div>
+  </header>
+
+  <!-- Card Form -->
+  <form id="actualizarForm" class="form-card">
+    <!-- Sección Identificación -->
+    <h3 class="section-title">
+      <span class="section-title__dot"></span> Identificación
+    </h3>
+    <div class="grid-2">
+      <div class="input-group">
+        <label for="cedulaActualizar">Cédula del usuario</label>
+        <div class="input-with-icon">
+          <span class="material-symbols-rounded">badge</span>
+          <input type="text" id="cedulaActualizar" maxlength="10" required />
+        </div>
+        <small class="hint">Obligatorio para localizar al usuario.</small>
+      </div>
+
+      <div class="input-group">
+        <label for="usuarioActualizar">Nuevo Usuario</label>
+        <div class="input-with-icon">
+          <span class="material-symbols-rounded">person</span>
+          <input type="text" id="usuarioActualizar" maxlength="20" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección Datos Personales -->
+    <h3 class="section-title">
+      <span class="section-title__dot"></span> Datos personales
+    </h3>
+    <div class="grid-2">
+      <div class="input-group">
+        <label for="nombreActualizar">Nuevo Nombre</label>
+        <div class="input-with-icon">
+          <span class="material-symbols-rounded">badge</span>
+          <input type="text" id="nombreActualizar" maxlength="25" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="apellidoActualizar">Nuevo Apellido</label>
+        <div class="input-with-icon">
+          <span class="material-symbols-rounded">badge</span>
+          <input type="text" id="apellidoActualizar" maxlength="25" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="correoActualizar">Nuevo Correo</label>
+        <div class="input-with-icon">
+          <span class="material-symbols-rounded">mail</span>
+          <input type="email" id="correoActualizar" maxlength="50" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="telefonoActualizar">Nuevo Teléfono</label>
+        <div class="input-with-icon">
+          <span class="material-symbols-rounded">call</span>
+          <input type="text" id="telefonoActualizar" maxlength="10" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección Acceso -->
+    <h3 class="section-title">
+      <span class="section-title__dot"></span> Acceso y Rol
+    </h3>
+    <div class="grid-2">
+      <div class="input-group">
+        <label for="contrasenaActualizar">Nueva Contraseña</label>
+        <div class="input-with-icon">
+          <span class="material-symbols-rounded">lock</span>
+          <input type="text" id="contrasenaActualizar" maxlength="20" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="rolActualizar">Nuevo Rol</label>
+        <div class="input-with-icon">
+          <span class="material-symbols-rounded">verified_user</span>
+          <select id="rolActualizar">
+            <option value="">-- Sin cambiar --</option>
+            <!-- (Se rellena por JS) -->
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary btn-lg">
+        <span class="material-symbols-rounded">save</span> Guardar cambios
+      </button>
+    </div>
+  </form>
+</div>
   </div>
   </div>
   <script src="../scripts/paneladmin.js"></script>

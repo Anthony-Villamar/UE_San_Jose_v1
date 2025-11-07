@@ -161,6 +161,7 @@ usuariosRouter.get('/buscar/:cedula', async (req, res) => {
       JOIN usuarios u ON p.cedula = u.cedula
       JOIN roles r ON u.id_rol = r.id_rol
       WHERE p.cedula = ?
+      AND u.estado = 'activo'
     `, [cedula]);
 
     if (!row) {
@@ -182,7 +183,8 @@ usuariosRouter.get('/buscar-con-roles/:cedula', async (req, res) => {
        FROM usuarios u
        JOIN personas p ON u.cedula = p.cedula
        JOIN roles r ON u.id_rol = r.id_rol
-       WHERE u.cedula = ?`,
+       WHERE u.cedula = ?
+       AND u.estado = 'activo'`,
       [cedula]
     );
 
@@ -214,6 +216,82 @@ usuariosRouter.get('/roles', async (req, res) => {
 });
 
 
+// Desactivar
+usuariosRouter.patch('/:cedula/desactivar', async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `UPDATE usuarios SET estado = 'inactivo' WHERE cedula = ?`,
+      [req.params.cedula]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json({ success: true, message: 'Usuario desactivado' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error al desactivar usuario' });
+  }
+});
+
+// Activar
+usuariosRouter.patch('/:cedula/activar', async (req, res) => {
+  try {
+    const [result] = await db.query(
+      `UPDATE usuarios SET estado = 'activo' WHERE cedula = ?`,
+      [req.params.cedula]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.json({ success: true, message: 'Usuario activado' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error al activar usuario' });
+  }
+});
+
+
+// Lista para panel admin: soporta ?estado=activo|inactivo y ?rol=nombre_rol
+usuariosRouter.get('/admin-list', async (req, res) => {
+  const { estado, rol } = req.query;
+
+  const where = [];
+  const params = [];
+
+  if (estado === 'activo' || estado === 'inactivo') {
+    where.push('u.estado = ?');
+    params.push(estado);
+  }
+  if (rol && rol !== 'todos') {
+    where.push('r.nombre_rol = ?');
+    params.push(rol);
+  }
+
+  const sql = `
+    SELECT
+      p.cedula,
+      p.nombre,
+      p.apellido,
+      u.usuario,
+      r.nombre_rol AS rol,
+      u.estado
+    FROM usuarios u
+    JOIN personas p ON p.cedula = u.cedula
+    JOIN roles r ON r.id_rol = u.id_rol
+    ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
+    ORDER BY p.apellido, p.nombre
+  `;
+
+  try {
+    const [rows] = await db.query(sql, params);
+    res.json(rows);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error al obtener lista de usuarios' });
+  }
+});
+
+
 //obtener usuario por rol para encuestas
 usuariosRouter.get("/:rolfetch", async (req, res) => {
   const rol = req.params.rolfetch;
@@ -224,6 +302,7 @@ usuariosRouter.get("/:rolfetch", async (req, res) => {
       JOIN usuarios u ON p.cedula = u.cedula
       JOIN roles r ON u.id_rol = r.id_rol
       WHERE r.nombre_rol = ?
+      AND u.estado = 'activo'
       AND u.cedula NOT IN ('0000000001', '0000000002', '0000000003')
     `, [rol]);
       
@@ -236,8 +315,6 @@ usuariosRouter.get("/:rolfetch", async (req, res) => {
     res.status(500).json({ error: "Error al obtener usuarios por rol" });
   }
 });
-
-
 
 
 export default usuariosRouter;

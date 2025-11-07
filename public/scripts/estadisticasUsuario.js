@@ -1,5 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Poner año apenas carga el DOM
+  const spanAnio = document.getElementById('anio');
+  if (spanAnio) {
+    spanAnio.textContent = new Date().getFullYear();
+  } else {
+    console.warn('No existe año en el DOM');
+  }
+
+
   // Obtener datos del usuario logueado
   let usuario;
   try {
@@ -27,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       filtroRango.style.display = 'block';
     }
   });
-  
+
 
   // 🔽 Mostrar TOP 3 de atención
   try {
@@ -57,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     </div>
   `;
       radarContainer.appendChild(div);
-      
+
 
       // Radar chart dentro del reverso
       const ctx = div.querySelector(`#graficoTopRadar${index + 1}`).getContext('2d');
@@ -98,152 +107,153 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
       // Activar rotación al hacer click
-const cards = document.querySelectorAll('.card');
-cards.forEach(card => {
-  card.addEventListener('click', () => {
-    const inner = card.querySelector('.card-inner');
-    inner.classList.toggle('rotated'); // <-- clase CSS que rotará
-  });
-});
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          const inner = card.querySelector('.card-inner');
+          inner.classList.toggle('rotated'); // <-- clase CSS que rotará
+        });
+      });
     });
   } catch (err) {
-  console.error(err);
-  alert("Error al obtener estadísticas TOP.");
-}
+    console.error(err);
+    alert("Error al obtener estadísticas TOP.");
+  }
 
-// 🔽 Estadísticas generales
-try {
-  const res = await fetch('/api/estadisticas/detalle', { credentials: 'include' });
-  const detalle = await res.json();
+  // 🔽 Estadísticas generales
+  try {
+    const res = await fetch('/api/estadisticas/detalle', { credentials: 'include' });
+    const detalle = await res.json();
 
-  document.getElementById('detalleUsuario').innerHTML = `
+    document.getElementById('detalleUsuario').innerHTML = `
       <p><strong>Promedio de Puntualidad:</strong> ${detalle.promedio_puntualidad ?? 'N/A'}</p>
       <p><strong>Promedio de Trato:</strong> ${detalle.promedio_trato ?? 'N/A'}</p>
       <p><strong>Promedio de Resolución:</strong> ${detalle.promedio_resolucion ?? 'N/A'}</p>
     `;
 
-  const ctx = document.getElementById('graficoGeneral').getContext('2d');
-  new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Puntualidad', 'Trato', 'Resolución'],
-      datasets: [{
-        label: 'Promedio',
-        data: [detalle.promedio_puntualidad || 0, detalle.promedio_trato || 0, detalle.promedio_resolucion || 0],
-        backgroundColor: ['blue', 'green', 'orange']
-      }]
-    }
-  });
+    const ctx = document.getElementById('graficoGeneral').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Puntualidad', 'Trato', 'Resolución'],
+        datasets: [{
+          label: 'Promedio',
+          data: [detalle.promedio_puntualidad || 0, detalle.promedio_trato || 0, detalle.promedio_resolucion || 0],
+          backgroundColor: ['blue', 'green', 'orange']
+        }]
+      }
+    });
 
-  // 🔽 Mostrar mensajes motivacionales con OpenAI
-    // mostrarMensajesMotivacionales(detalle);
+    // 🔽 Mostrar mensajes motivacionales con OpenAI
+    mostrarMensajesMotivacionales(detalle);
 
-} catch (err) {
-  console.error(err);
-  alert("Error al obtener estadísticas generales.");
-}
+  } catch (err) {
+    console.error(err);
+    alert("Error al obtener estadísticas generales.");
+  }
 
-let graficoPastel = null;
+  let graficoPastel = null;
 
-function mostrarDatosYGrafico(filtrado, titulo = 'Promedios') {
-  const container = document.getElementById('estadisticasDiarias');
-  container.innerHTML = `
+  function mostrarDatosYGrafico(filtrado, titulo = 'Promedios') {
+    const container = document.getElementById('estadisticasDiarias');
+    container.innerHTML = `
       <strong>${titulo}:</strong>
       Puntualidad: ${filtrado.promedio_puntualidad} |
       Trato: ${filtrado.promedio_trato} |
       Resolución: ${filtrado.promedio_resolucion}
     `;
 
-  const canvas = document.getElementById('graficoPastel');
-  canvas.style.display = 'block';
+    const canvas = document.getElementById('graficoPastel');
+    canvas.style.display = 'block';
 
-  if (graficoPastel) graficoPastel.destroy();
+    if (graficoPastel) graficoPastel.destroy();
 
-  const ctx = canvas.getContext('2d');
-  graficoPastel = new Chart(ctx, {
-    type: 'polarArea',
-    data: {
-      labels: ['Puntualidad', 'Trato', 'Resolución'],
-      datasets: [{
-        label: 'Promedio',
-        data: [
-          filtrado.promedio_puntualidad || 0,
-          filtrado.promedio_trato || 0,
-          filtrado.promedio_resolucion || 0
-        ],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)'
-        ],
-        borderColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 206, 86)'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: { r: { suggestedMin: 0, suggestedMax: 5 } }
-    }
-  });
-}
-
-async function mostrarEstadisticaPorFecha(fecha) {
-  try {
-    const res = await fetch('/api/estadisticas/detalle/diario', { credentials: 'include' });
-    const dias = await res.json();
-
-    const fechaFormateada = new Date(fecha).toISOString().slice(0, 10);
-    const dato = dias.find(d => new Date(d.fecha).toISOString().slice(0, 10) === fechaFormateada);
-
-    if (dato) {
-      mostrarDatosYGrafico(dato, fechaFormateada);
-    } else {
-      document.getElementById('estadisticasDiarias').innerHTML = '<p>No hay datos para esta fecha.</p>';
-      document.getElementById('graficoPastel').style.display = 'none';
-      if (graficoPastel) graficoPastel.destroy();
-    }
-  } catch (err) {
-    console.error(err);
-    alert('Error al filtrar por fecha.');
+    const ctx = canvas.getContext('2d');
+    graficoPastel = new Chart(ctx, {
+      type: 'polarArea',
+      data: {
+        labels: ['Puntualidad', 'Trato', 'Resolución'],
+        datasets: [{
+          label: 'Promedio',
+          data: [
+            filtrado.promedio_puntualidad || 0,
+            filtrado.promedio_trato || 0,
+            filtrado.promedio_resolucion || 0
+          ],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 206, 86)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: { r: { suggestedMin: 0, suggestedMax: 5 } }
+      }
+    });
   }
-}
 
-// 🔽 Botón FILTRAR
-document.getElementById('filtrarBtn').addEventListener('click', async () => {
-  const tipoFiltro = document.getElementById('tipoFiltro').value;
-
-  if (tipoFiltro === 'fecha') {
-    const fecha = document.getElementById('fechaFiltro').value;
-    if (!fecha) return alert('Selecciona una fecha');
-    mostrarEstadisticaPorFecha(fecha);
-  } else {
-    const desde = document.getElementById('fechaInicoo').value;
-    const hasta = document.getElementById('fechaFin').value;
-    if (!desde || !hasta) return alert('Selecciona ambas fechas');
-
+  async function mostrarEstadisticaPorFecha(fecha) {
     try {
-      const res = await fetch(`/api/estadisticas/detalle/promedio?desde=${desde}&hasta=${hasta}`, { credentials: 'include' });
-      const data = await res.json();
+      const res = await fetch('/api/estadisticas/detalle/diario', { credentials: 'include' });
+      const dias = await res.json();
 
-      if (!data || (!data.promedio_puntualidad && !data.promedio_trato && !data.promedio_resolucion)) {
-        document.getElementById('estadisticasDiarias').innerHTML = '<p>No hay datos para este rango.</p>';
+      const fechaFormateada = new Date(fecha).toISOString().slice(0, 10);
+      const dato = dias.find(d => new Date(d.fecha).toISOString().slice(0, 10) === fechaFormateada);
+
+      if (dato) {
+        mostrarDatosYGrafico(dato, fechaFormateada);
+      } else {
+        document.getElementById('estadisticasDiarias').innerHTML = '<p>No hay datos para esta fecha.</p>';
         document.getElementById('graficoPastel').style.display = 'none';
         if (graficoPastel) graficoPastel.destroy();
-      } else {
-        mostrarDatosYGrafico(data, `Promedio del ${desde} al ${hasta}`);
       }
     } catch (err) {
       console.error(err);
-      alert('Error al filtrar por rango de fechas.');
+      alert('Error al filtrar por fecha.');
     }
   }
-});
 
-// Valor por defecto (hoy)
-document.getElementById('fechaFiltro').value = new Date().toISOString().slice(0, 10);
+  // 🔽 Botón FILTRAR
+  document.getElementById('filtrarBtn').addEventListener('click', async () => {
+    const tipoFiltro = document.getElementById('tipoFiltro').value;
+
+    if (tipoFiltro === 'fecha') {
+      const fecha = document.getElementById('fechaFiltro').value;
+      if (!fecha) return alert('Selecciona una fecha');
+      mostrarEstadisticaPorFecha(fecha);
+    } else {
+      const desde = document.getElementById('fechaInicoo').value;
+      const hasta = document.getElementById('fechaFin').value;
+      if (!desde || !hasta) return alert('Selecciona ambas fechas');
+
+      try {
+        const res = await fetch(`/api/estadisticas/detalle/promedio?desde=${desde}&hasta=${hasta}`, { credentials: 'include' });
+        const data = await res.json();
+
+        if (!data || (!data.promedio_puntualidad && !data.promedio_trato && !data.promedio_resolucion)) {
+          document.getElementById('estadisticasDiarias').innerHTML = '<p>No hay datos para este rango.</p>';
+          document.getElementById('graficoPastel').style.display = 'none';
+          if (graficoPastel) graficoPastel.destroy();
+        } else {
+          mostrarDatosYGrafico(data, `Promedio del ${desde} al ${hasta}`);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error al filtrar por rango de fechas.');
+      }
+    }
+  });
+
+  // Valor por defecto (hoy)
+  document.getElementById('fechaFiltro').value = new Date().toISOString().slice(0, 10);
+
 });
 
 // Logout
@@ -272,27 +282,28 @@ if (logoutBtn) {
 
 // Función para obtener mensajes motivacionales de OpenAI
 //linea 138 y 139 son con esto de openai para las palabras motivacionales
-// async function mostrarMensajesMotivacionales(detalle) {
-//   const footer = document.getElementById('mensajeMotivacional');
+async function mostrarMensajesMotivacionales(detalle) {
+  const footer = document.getElementById('mensajeMotivacional');
 
-//   const categorias = [
-//     { nombre: "Puntualidad", puntaje: detalle.promedio_puntualidad },
-//     { nombre: "Trato", puntaje: detalle.promedio_trato },
-//     { nombre: "Resolución", puntaje: detalle.promedio_resolucion }
-//   ];
+  const categorias = [
+    { nombre: "Puntualidad", puntaje: detalle.promedio_puntualidad },
+    { nombre: "Trato", puntaje: detalle.promedio_trato },
+    { nombre: "Resolución", puntaje: detalle.promedio_resolucion }
+  ];
 
-//   const mensajes = await Promise.all(
-//     categorias.map(async c => {
-//       const res = await fetch('/api/generar-mensaje', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ categoria: c.nombre, puntaje: Number(c.puntaje) }) // ✅ aquí
-//       });
+  const mensajes = await Promise.all(
+    categorias.map(async c => {
+      const res = await fetch('/api/generar-mensaje', {
+        method: 'POST',
+        credentials: "include",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ categoria: c.nombre, puntaje: Number(c.puntaje) })
+      });
 
-//       const data = await res.json();
-//       return `${c.nombre}: ${data.mensaje}`;
-//     })
-//   );
+      const data = await res.json();
+      return `${c.nombre}: ${data.mensaje}`;
+    })
+  );
 
-//   footer.innerHTML = mensajes.join('<br>');
-// }
+  footer.innerHTML = mensajes.join('<br>');
+}

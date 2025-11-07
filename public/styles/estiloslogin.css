@@ -150,70 +150,82 @@ h2 {
 
 /* ====== RESPONSIVIDAD ====== */
 
-/* Tablets y pantallas medianas */
-@media (max-width: 992px) {
-  .login-container {
-    width: 80%;
-    padding: 30px 25px;
-  }
+/* ====== Breakpoints ====== */
 
-  h2 {
-    font-size: 1.6em;
-  }
-
-  #login {
-    font-size: 1.1em;
-    padding: 10px;
-  }
+/* >= 1200px (desktop grande) */
+@media (min-width: 1200px){
+  .login-container{ width: 440px; }
 }
 
-/* Móviles grandes */
-@media (max-width: 768px) {
-  .login-container {
-    width: 90%;
-    padding: 25px 20px;
+/* 992–1199 (laptop) */
+@media (min-width: 992px) and (max-width: 1199.98px){
+  .login-container{ width: 420px; }
+}
+
+/* 768–991 (tablet) */
+@media (min-width: 768px) and (max-width: 991.98px){
+  .login-container{ width: min(86vw, 420px); }
+}
+
+/* 576–767 (móvil grande / phablet) */
+@media (min-width: 576px) and (max-width: 767.98px){
+  .login-container{
+    width: min(90vw, 400px);
     gap: 20px;
   }
-
-  #logo {
-    width: 70%;
-  }
-
-  h2 {
-    font-size: 1.4em;
-  }
-
-  #loginForm input,
-  .input-group input {
-    font-size: 0.95em;
-    padding: 9px;
-  }
-
-  .button_eye {
-    width: 40px;
-    height: 40px;
-    font-size: 1em;
-  }
+  #logo{ width: clamp(58%, 64%, 70%); }
 }
 
-/* Móviles pequeños */
-@media (max-width: 480px) {
-  .login-container {
-    width: 95%;
-    padding: 20px 15px;
-    border-radius: 15px;
+/* <= 480 (móvil pequeño) */
+@media (max-width: 480px){
+  .login-container{
+    width: min(80vw, 360px);
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+  #logo{ width: clamp(54%, 60%, 64%); }
+}
+
+/* <= 360 (móvil muy chico) */
+@media (max-width: 360px){
+  .login-container{
+    width: 80vw; padding: 16px 12px;
+    gap: 14px; border-radius: 14px;
+  }
+  #logo{ width: 58%; }
+  .button_eye{ width: 38px; height: 38px; }
+}
+
+/* ====== HORIZONTAL / LANDSCAPE TUNING ====== */
+
+/* Regla general: cuando el dispositivo está en landscape */
+
+/* Landscape con muy poco alto (p. ej., 320–420px) */
+@media (orientation: landscape) and (max-height: 460px){
+  .login-container{
+    width: min(520px, 95vw);
+    padding: 14px 12px;
+    gap: 1px;
+    height: 85dvh;               /* ocupa el alto disponible */
   }
 
-  #logo {
-    width: 60%;
-  }
+  #logo{ width: 40%; }
+  h2{ font-size: 1.1em; }
 
-  h2 {
-    font-size: 1.2em;
-  }
+  #loginForm input,
+  .input-group input{ font-size: .9em; padding: 7px 9px; }
+  .button_eye{ width: 34px; height: 34px; font-size: .9em; }
+  #login{ font-size: .95em; padding: 9px; }
+}
 
-  #login {
-    font-size: 1em;
-    padding: 10px;
+/* Landscape “extremo” (teclado abierto o pantallas muy bajas) */
+@media (orientation: landscape) and (max-height: 380px){
+  body{ align-items: stretch; }
+  .login-container{
+    width: 70%;
+    max-width: none;
+    height: 90dvh;               /* ocupa el alto disponible */
+    border-radius: 20px;             /* como app full-screen */
+    margin: 5px;
   }
 }
